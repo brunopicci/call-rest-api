@@ -272,6 +272,8 @@ class ChiamataRest
     }
 
     /**
+     *
+     * get url
      * @return string
      */
     public function getUrl()
@@ -280,6 +282,8 @@ class ChiamataRest
     }
 
     /**
+     * set url
+     *
      * @param string $url
      */
     public function setUrl($url)
@@ -288,6 +292,8 @@ class ChiamataRest
     }
 
     /**
+     * get login
+     *
      * @return string
      */
     public function getLogin()
@@ -296,6 +302,8 @@ class ChiamataRest
     }
 
     /**
+     * set login
+     *
      * @param string $login
      */
     public function setLogin($login)
@@ -304,6 +312,8 @@ class ChiamataRest
     }
 
     /**
+     * get password
+     *
      * @return string
      */
     public function getPassword()
@@ -312,6 +322,8 @@ class ChiamataRest
     }
 
     /**
+     * set password
+     *
      * @param string $password
      */
     public function setPassword($password)
@@ -320,6 +332,9 @@ class ChiamataRest
     }
 
     /**
+     *
+     * get caller
+     *
      * @return string
      */
     public function getChiamante()
@@ -328,6 +343,8 @@ class ChiamataRest
     }
 
     /**
+     * set caller
+     *
      * @param string $chiamante
      */
     public function setChiamante($chiamante)
@@ -336,6 +353,8 @@ class ChiamataRest
     }
 
     /**
+     * get json
+     *
      * @return string
      */
     public function getJson()
@@ -344,6 +363,8 @@ class ChiamataRest
     }
 
     /**
+     * set json
+     *
      * @param string $json
      */
     public function setJson($json)
@@ -352,6 +373,8 @@ class ChiamataRest
     }
 
     /**
+     * get httpverb
+     *
      * @return string
      */
     public function getTipoChiamata()
@@ -360,6 +383,8 @@ class ChiamataRest
     }
 
     /**
+     * set httpverb
+     *
      * @param string $tipoChiamata
      */
     public function setTipoChiamata($tipoChiamata)
@@ -368,6 +393,8 @@ class ChiamataRest
     }
 
     /**
+     * get if control succes field
+     *
      * @return boolean
      */
     public function getControlSuccess()
@@ -376,6 +403,8 @@ class ChiamataRest
     }
 
     /**
+     * set if control succes field
+     *
      * @param boolean $controlSuccess
      */
     public function setControlSuccess($controlSuccess)
@@ -384,6 +413,8 @@ class ChiamataRest
     }
 
     /**
+     * return httpcode of last request
+     *
      * @return integer
      */
     public function getHttpcode()

@@ -18,26 +18,36 @@ class Risultato
 {
 
     /**
+     * contain information if there is been an error
+     *
      * @boolean
      */
     private $success;
 
     /**
+     * contain the message
+     *
      * @string
      */
     private $message;
 
     /**
+     * contain metadata catalog
+     *
      * @string
      */
     private $catalog;
 
     /**
+     * this contains the information, the core
+     *
      * @var
      */
     private $items;
 
     /**
+     * get success value
+     *
      * @return boolean
      */
     public function getSuccess()
@@ -46,6 +56,8 @@ class Risultato
     }
 
     /**
+     * set success value
+     *
      * @param boolean $success
      */
     public function setSuccess($success)
@@ -54,6 +66,8 @@ class Risultato
     }
 
     /**
+     * get messagge
+     *
      * @return string
      */
     public function getMessage()
@@ -62,6 +76,8 @@ class Risultato
     }
 
     /**
+     * set message
+     *
      * @param string $message
      */
     public function setMessage($message)
@@ -70,6 +86,8 @@ class Risultato
     }
 
     /**
+     * get metadata catalog
+     *
      * @return string
      */
     public function getCatalog()
@@ -78,6 +96,8 @@ class Risultato
     }
 
     /**
+     * set metadata catalog
+     *
      * @param string $catalog
      */
     public function setCatalog($catalog)
@@ -86,6 +106,8 @@ class Risultato
     }
 
     /**
+     * get items
+     *
      * @return mixed
      */
     public function getItems()
@@ -94,6 +116,8 @@ class Risultato
     }
 
     /**
+     * set items
+     *
      * @param mixed $items
      */
     public function setItems($items)
