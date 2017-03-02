@@ -9,6 +9,8 @@
 namespace Services\Bundle\Rest\Entity;
 
 /**
+ * This class contains the format for the json response
+ *
  * Class Risultato
  * @package AppBundle\Entity
  */
@@ -16,17 +18,17 @@ class Risultato
 {
 
     /**
-     * @var
+     * @boolean
      */
     private $success;
 
     /**
-     * @var
+     * @string
      */
     private $message;
 
     /**
-     * @var
+     * @string
      */
     private $catalog;
 
@@ -36,7 +38,7 @@ class Risultato
     private $items;
 
     /**
-     * @return mixed
+     * @return boolean
      */
     public function getSuccess()
     {
@@ -44,7 +46,7 @@ class Risultato
     }
 
     /**
-     * @param mixed $success
+     * @param boolean $success
      */
     public function setSuccess($success)
     {
@@ -52,7 +54,7 @@ class Risultato
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getMessage()
     {
@@ -60,7 +62,7 @@ class Risultato
     }
 
     /**
-     * @param mixed $message
+     * @param string $message
      */
     public function setMessage($message)
     {
@@ -68,7 +70,7 @@ class Risultato
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getCatalog()
     {
@@ -76,7 +78,7 @@ class Risultato
     }
 
     /**
-     * @param mixed $catalog
+     * @param string $catalog
      */
     public function setCatalog($catalog)
     {
