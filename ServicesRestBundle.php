@@ -1,4 +1,10 @@
 <?php
+/**
+ * Created by PhpStorm.
+ * User: bruno
+ * Date: 11/2/16
+ * Time: 12:41 PM
+ */
 
 namespace Services\Bundle\Rest;
 
