@@ -9,6 +9,8 @@
 namespace Services\Bundle\Rest\Entity;
 
 /**
+ * This class permit to call rest resources
+ *
  * Class ChiamataRest
  * @package ServicesBundle\Entity
  */
@@ -16,34 +18,53 @@ class ChiamataRest
 {
 
     /**
-     * @var
+     * Url to call
+     *
+     * @string
      */
     private $url;
 
     /**
-     * @var
+     * Userid for the header
+     *
+     * @string
      */
     private $login;
 
     /**
-     * @var
+     * Password for the header
+     *
+     * @string
      */
     private $password;
 
     /**
-     * @var
+     * Who is calling
+     *
+     * @string
      */
     private $chiamante;
 
     /**
-     * @var
+     * Here you can set your json
+     *
+     * @string
      */
     private $json;
 
     /**
-     * @var
+     * http verrb
+     *
+     * @string
      */
     private $tipoChiamata;
+
+    /**
+     * Contain the information if needs to control success field or not in case it doesn't exist
+     *
+     * @boolean
+     */
+    private $controlSuccess=true;
 
     /**
      *
@@ -52,28 +73,37 @@ class ChiamataRest
      * GET
      * POST
      * PUT
+     * DELETE
      *
-     * @return mixed|string
+     * This metod make a rest call and return an array, http verb permits are:
+     * GET
+     * POST
+     * PUT
+     * DELETE
+     *
+     * @return array
      * @throws \Exception
      */
     public function chiamataRestDecodificata() {
 
+        //Dichiaro le variabili
         $url=$this->url;
         $login=$this->login;
         $password=$this->password;
         $chiamante=$this->chiamante;
         $json=$this->json;
         $tipoChiamata=$this->tipoChiamata;
-
         $ritorno="";
         $jsonDecodificato="";
 
         //Tolgo gli spazi
         $url = str_replace(" ","%20",$url);
-        //$url=urlencode($url);
+
+        //Inizializzo la chiamata
         $ch = curl_init();
 
         //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
+        //Imposto i valori
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
@@ -86,6 +116,7 @@ class ChiamataRest
             );
         }
 
+        //Se è stato passato un userid allora lo setto nell'header
         if (!empty($login)) {
             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
@@ -96,6 +127,7 @@ class ChiamataRest
             curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         }
 
+        //Effettuo la chiamata
         $ritorno=curl_exec($ch);
 
         // Check if an error occurred
@@ -107,18 +139,26 @@ class ChiamataRest
         // Get HTTP response code
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+        //Chiudo la chiamata
         curl_close($ch);
 
+        //Controllo se il codice è tra quelli ammessi (200,201,202)
         if ($code!=200 && $code!=201 && $code!=202)
             throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
 
+        //Decodifico in un array il json di ritorno
         $jsonDecodificato=json_decode($ritorno);
 
-        if (!$jsonDecodificato->success) {
-            throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
-                $jsonDecodificato->message);
+        //Controllo se è stato scelto di testare il success field
+        if ($this->controlSuccess) {
+            //Controllo se il campo success è true o false
+            if (!$jsonDecodificato->success) {
+                throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
+                    $jsonDecodificato->message);
+            }
         }
 
+        //Restituisco l'array relativo al json ricevuto
         return $jsonDecodificato;
     }
 
@@ -130,30 +170,37 @@ class ChiamataRest
      * POST
      * PUT
      *
+     * This metod make a rest call and return a string containing the json received, http verb permits are:
+     * GET
+     * POST
+     * PUT
+     * DELETE
+     *
      * @return mixed|string
      * @throws \Exception
      */
     public function chiamataRest() {
 
+        //Dichiaro le variabili
         $url=$this->url;
         $login=$this->login;
         $password=$this->password;
         $chiamante=$this->chiamante;
         $json=$this->json;
         $tipoChiamata=$this->tipoChiamata;
-
         $ritorno="";
         $jsonDecodificato="";
 
         //Tolgo gli spazi
         $url = str_replace(" ","%20",$url);
-        //$url=urlencode($url);
+
+        //Inizializzo la chiamata
         $ch = curl_init();
 
+        //Imposto i valori
         //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
         curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
 
         //Se è post o patch di default deve passargli un json
@@ -164,6 +211,7 @@ class ChiamataRest
             );
         }
 
+        //Se è stato passato un userid allora lo setto nell'header
         if (!empty($login)) {
             curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
             curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
@@ -174,6 +222,7 @@ class ChiamataRest
             curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
         }
 
+        //Effettuo la chiamata
         $ritorno=curl_exec($ch);
 
         // Check if an error occurred
@@ -185,23 +234,32 @@ class ChiamataRest
         // Get HTTP response code
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
 
+        //Chiudo
         curl_close($ch);
 
+        //Controllo se il codice è tra quelli ammessi (200,201,202)
         if ($code!=200 && $code!=201 && $code!=202)
             throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
 
-        $jsonDecodificato=json_decode($ritorno);
+        //Controllo se è stato scelto di testare il success field
+        if ($this->controlSuccess) {
 
-        if (!$jsonDecodificato->success) {
-            throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
-                $jsonDecodificato->message);
+            //Decodifico il json in un array per semplicità per accedere meglio alle proprietà successivamente
+            $jsonDecodificato=json_decode($ritorno);
+
+            //Controllo il campo success
+            if (!$jsonDecodificato->success) {
+                throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
+                    $jsonDecodificato->message);
+            }
         }
 
+        //Restituisco il json
         return $ritorno;
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getUrl()
     {
@@ -209,7 +267,7 @@ class ChiamataRest
     }
 
     /**
-     * @param mixed $url
+     * @param string $url
      */
     public function setUrl($url)
     {
@@ -217,7 +275,7 @@ class ChiamataRest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getLogin()
     {
@@ -225,7 +283,7 @@ class ChiamataRest
     }
 
     /**
-     * @param mixed $login
+     * @param string $login
      */
     public function setLogin($login)
     {
@@ -233,7 +291,7 @@ class ChiamataRest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getPassword()
     {
@@ -241,7 +299,7 @@ class ChiamataRest
     }
 
     /**
-     * @param mixed $password
+     * @param string $password
      */
     public function setPassword($password)
     {
@@ -249,7 +307,7 @@ class ChiamataRest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getChiamante()
     {
@@ -257,7 +315,7 @@ class ChiamataRest
     }
 
     /**
-     * @param mixed $chiamante
+     * @param string $chiamante
      */
     public function setChiamante($chiamante)
     {
@@ -265,7 +323,7 @@ class ChiamataRest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getJson()
     {
@@ -273,7 +331,7 @@ class ChiamataRest
     }
 
     /**
-     * @param mixed $json
+     * @param string $json
      */
     public function setJson($json)
     {
@@ -281,7 +339,7 @@ class ChiamataRest
     }
 
     /**
-     * @return mixed
+     * @return string
      */
     public function getTipoChiamata()
     {
@@ -289,11 +347,27 @@ class ChiamataRest
     }
 
     /**
-     * @param mixed $tipoChiamata
+     * @param string $tipoChiamata
      */
     public function setTipoChiamata($tipoChiamata)
     {
         $this->tipoChiamata = $tipoChiamata;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function getControlSuccess()
+    {
+        return $this->controlSuccess;
+    }
+
+    /**
+     * @param boolean $controlSuccess
+     */
+    public function setControlSuccess($controlSuccess)
+    {
+        $this->controlSuccess = $controlSuccess;
     }
 
 
