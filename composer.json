@@ -5,6 +5,9 @@
   "keywords": ["rest"],
   "homepage": "https://github.com/brunopicci/services-bundle",
   "license": "MIT",
+  "require": {
+    "php": "^5.3.3 || ^7.0"
+  },
   "authors": [
     {
       "name": "Bruno Piccirilli",
