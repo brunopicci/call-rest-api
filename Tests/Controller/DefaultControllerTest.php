@@ -1,6 +1,6 @@
 <?php
 
-namespace ServicesRestBundle\Tests\Controller;
+namespace Services\Bundle\Rest\Tests\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 

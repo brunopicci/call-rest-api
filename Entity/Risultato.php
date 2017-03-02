@@ -6,7 +6,7 @@
  * Time: 9:38 AM
  */
 
-namespace ServicesRestBundle\Entity;
+namespace Services\Bundle\Rest\Entity;
 
 /**
  * Class Risultato

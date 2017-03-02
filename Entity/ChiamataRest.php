@@ -6,7 +6,7 @@
  * Time: 12:41 PM
  */
 
-namespace ServicesRestBundle\Entity;
+namespace Services\Bundle\Rest\Entity;
 
 /**
  * Class ChiamataRest
