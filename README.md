@@ -54,7 +54,7 @@ class AppKernel extends Kernel
         $bundles = array(
             // ...
 
-            new ServicesBundle\ServicesBundle(),
+            new Services\Bundle\Rest\ServicesRestBundle(),
         );
 
         // ...
@@ -67,7 +67,7 @@ class AppKernel extends Kernel
 In config.yml import services.yml of the bundle:
 imports:
     ...
-    - { resource: "@ServicesBundle/Resources/config/services.yml" }
+    - { resource: "@ServicesRestBundle/Resources/config/services.yml" }
 
 
 License
