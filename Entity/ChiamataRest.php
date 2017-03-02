@@ -67,6 +67,13 @@ class ChiamataRest
     private $controlSuccess=true;
 
     /**
+     * Contains the httpcode received from the rest call
+     *
+     * @integer
+     */
+    private $httpcode;
+
+    /**
      *
      * Questo metodo effettua una chiamata rest con decodifica in output sotto autenticazione all'url passato, restituisce un array decodificato dal json di risposta, controlla anche se c'è stato un errore logico ed in caso solleva un'eccezione
      * Se viene passato un tipo chiamata questo può assumere i seguenti valori
@@ -138,6 +145,9 @@ class ChiamataRest
 
         // Get HTTP response code
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        //Salvo l'httpcode nel caso in cui il chiamante voglia leggerlo
+        $this->httpcode=$code;
 
         //Chiudo la chiamata
         curl_close($ch);
@@ -233,6 +243,9 @@ class ChiamataRest
 
         // Get HTTP response code
         $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+
+        //Salvo l'httpcode nel caso in cui il chiamante voglia leggerlo
+        $this->httpcode=$code;
 
         //Chiudo
         curl_close($ch);
@@ -368,6 +381,14 @@ class ChiamataRest
     public function setControlSuccess($controlSuccess)
     {
         $this->controlSuccess = $controlSuccess;
+    }
+
+    /**
+     * @return integer
+     */
+    public function getHttpcode()
+    {
+        return $this->httpcode;
     }
 
 
