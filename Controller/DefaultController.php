@@ -12,6 +12,6 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->redirectToRoute('business_myHome');
+        return $this->render('ServicesBundle:Default:index.html.twig');
     }
 }
