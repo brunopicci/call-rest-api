@@ -1,9 +1,9 @@
 <?php
 
-namespace ServicesBundle;
+namespace Services\Rest;
 
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
-class ServicesBundle extends Bundle
+class ServicesRestBundle extends Bundle
 {
 }

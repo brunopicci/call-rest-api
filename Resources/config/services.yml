@@ -1,5 +1,5 @@
 services:
     services.chiamataRest:
-            class: ServicesBundle\Entity\ChiamataRest
+            class: ServicesRestBundle\Entity\ChiamataRest
     services.risultato:
-                class: ServicesBundle\Entity\Risultato
+                class: ServicesRestBundle\Entity\Risultato
