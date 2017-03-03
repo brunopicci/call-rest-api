@@ -93,7 +93,7 @@ Open a command console, enter your project directory and execute the
 following command to download the latest stable version of this bundle:
 
 ```console
-$ composer require brunopicci/services-bundle
+$ composer require brunopicci/call-rest-api
 ```
 
 This command requires you to have Composer installed globally, as explained
