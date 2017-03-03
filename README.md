@@ -9,15 +9,79 @@ This bundle implements a service to call rest api. Features include:
 Note
 ----
 
-At this moment this bundle is only in alpha version
+The bundle is released and can be used. However it under heavy development.
 
 Documentation
 -------------
 
-I'm doing it
+This bundle permit to call rest api and offer an entity with base configuration to return a json.
 
-Installation
-------------
+To use this bundle, first you must use the service with DI like this:
+
+```php
+$apiRest = $this->get('services.chiamatarest');
+```
+
+Then you can do your settings to the service. 
+By default the service will search, in the json response from rest api, for a field named "message" that contain the result message of the call and for a field name "success" for the result (true or false) of the call.
+If this doesn't meet you, you can change thei name in this way:
+
+For the message field:
+```php
+$apiRest->setNomeCampoMessage("<your-field-name>");
+```
+
+For the success field:
+```php
+$apiRest->setNomeCampoSuccess("<your-field-name>");
+```
+
+You can also decide to not make the test for a specific field setting this option:
+```php
+$apiRest->setControlSuccess(false);
+```
+By default it's true.
+
+Then, you can make other settings, like this for example:
+
+Setting the project that is calling, for the logs:
+```php
+$apiRest->setChiamante("<your-application>");
+```
+
+Set your http verb
+```php
+$apiRest->setTipoChiamata("<http-verb");
+```
+
+Set the url to call
+```php
+$apiRest->setUrl("<api-rest-url>");
+```
+
+You can pass a json input, for now only POST, PUT and GET http verb accept json input. You can do it so:
+```php
+$apiRest->setJson("<your-json>");
+```
+
+For each request the service will test the returning http code. If it receives 200,201 or 202 it's all ok.
+In other case it will raise an exception that needs to be captured.
+
+You can now make the api request receiving an array like this
+```php
+$returnJsonAarray=$apiRest->chiamataRestDecodificata();
+```
+
+Or You can make the api request receiving only the json like this
+```php
+$returnJson=$apiRest->chiamataRest();
+```
+
+You can however see what http code the request returned in this way:
+```php
+$returnHttpCode=$apiRest->getHttpcode();
+```
+
 
 Installation
 ============
