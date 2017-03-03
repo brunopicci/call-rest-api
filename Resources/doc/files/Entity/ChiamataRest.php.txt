@@ -74,6 +74,20 @@ class ChiamataRest
     private $httpcode;
 
     /**
+     * This variable contain the name of the field containing message information from request
+     *
+     * @var string
+     */
+    private $nomeCampoMessage="message";
+
+    /**
+     * This variable contain the name of the field containing the result of the request
+     *
+     * @var string
+     */
+    private $nomeCampoSuccess="success";
+
+    /**
      *
      * Questo metodo effettua una chiamata rest con decodifica in output sotto autenticazione all'url passato, restituisce un array decodificato dal json di risposta, controlla anche se c'è stato un errore logico ed in caso solleva un'eccezione
      * Se viene passato un tipo chiamata questo può assumere i seguenti valori
@@ -102,6 +116,8 @@ class ChiamataRest
         $tipoChiamata=$this->tipoChiamata;
         $ritorno="";
         $jsonDecodificato="";
+        $messaggio=$this->nomeCampoMessage;
+        $success=$this->nomeCampoSuccess;
 
         //Tolgo gli spazi
         $url = str_replace(" ","%20",$url);
@@ -120,6 +136,14 @@ class ChiamataRest
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                 'Content-Type: application/json',
                 'Content-Length: ' . strlen($json))
+            );
+        }
+
+        //Controllo se è stato passato un json anche alla chiamata delete
+        if ($tipoChiamata=="DELETE" && !empty($json)) {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($json))
             );
         }
 
@@ -162,9 +186,9 @@ class ChiamataRest
         //Controllo se è stato scelto di testare il success field
         if ($this->controlSuccess) {
             //Controllo se il campo success è true o false
-            if (!$jsonDecodificato->success) {
+            if (!$jsonDecodificato->$success) {
                 throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
-                    $jsonDecodificato->message);
+                    $jsonDecodificato->$messaggio);
             }
         }
 
@@ -200,6 +224,8 @@ class ChiamataRest
         $tipoChiamata=$this->tipoChiamata;
         $ritorno="";
         $jsonDecodificato="";
+        $messaggio=$this->nomeCampoMessage;
+        $success=$this->nomeCampoSuccess;
 
         //Tolgo gli spazi
         $url = str_replace(" ","%20",$url);
@@ -215,6 +241,14 @@ class ChiamataRest
 
         //Se è post o patch di default deve passargli un json
         if ($tipoChiamata=="POST" || $tipoChiamata=="PUT") {
+            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($json))
+            );
+        }
+
+        //Controllo se è stato passato un json anche alla chiamata delete
+        if ($tipoChiamata=="DELETE" && !empty($json)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
                     'Content-Type: application/json',
                     'Content-Length: ' . strlen($json))
@@ -261,9 +295,9 @@ class ChiamataRest
             $jsonDecodificato=json_decode($ritorno);
 
             //Controllo il campo success
-            if (!$jsonDecodificato->success) {
+            if (!$jsonDecodificato->$success) {
                 throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
-                    $jsonDecodificato->message);
+                    $jsonDecodificato->$messaggio);
             }
         }
 
@@ -420,6 +454,46 @@ class ChiamataRest
     public function getHttpcode()
     {
         return $this->httpcode;
+    }
+
+    /**
+     * get value of field nomeCampoMessage
+     *
+     * @return string
+     */
+    public function getNomeCampoMessage(): string
+    {
+        return $this->nomeCampoMessage;
+    }
+
+    /**
+     * set value of field nomeCampoMessage
+     *
+     * @param string $nomeCampoMessage
+     */
+    public function setNomeCampoMessage(string $nomeCampoMessage)
+    {
+        $this->nomeCampoMessage = $nomeCampoMessage;
+    }
+
+    /**
+     * get value of field nomeCampoSuccess
+     *
+     * @return string
+     */
+    public function getNomeCampoSuccess(): string
+    {
+        return $this->nomeCampoSuccess;
+    }
+
+    /**
+     * set value of field nomeCampoSuccess
+     *
+     * @param string $nomeCampoSuccess
+     */
+    public function setNomeCampoSuccess(string $nomeCampoSuccess)
+    {
+        $this->nomeCampoSuccess = $nomeCampoSuccess;
     }
 
 
