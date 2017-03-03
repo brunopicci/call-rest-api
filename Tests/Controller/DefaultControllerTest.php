@@ -24,6 +24,8 @@ class DefaultControllerTest extends WebTestCase
      */
     public function testIndex()
     {
+
+        //Test is working progress
         $client = static::createClient();
 
         $crawler = $client->request('GET', '/');
