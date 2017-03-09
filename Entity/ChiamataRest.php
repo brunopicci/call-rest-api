@@ -461,7 +461,7 @@ class ChiamataRest
      *
      * @return string
      */
-    public function getNomeCampoMessage(): string
+    public function getNomeCampoMessage()
     {
         return $this->nomeCampoMessage;
     }
@@ -471,7 +471,7 @@ class ChiamataRest
      *
      * @param string $nomeCampoMessage
      */
-    public function setNomeCampoMessage(string $nomeCampoMessage)
+    public function setNomeCampoMessage($nomeCampoMessage)
     {
         $this->nomeCampoMessage = $nomeCampoMessage;
     }
@@ -481,7 +481,7 @@ class ChiamataRest
      *
      * @return string
      */
-    public function getNomeCampoSuccess(): string
+    public function getNomeCampoSuccess()
     {
         return $this->nomeCampoSuccess;
     }
@@ -491,7 +491,7 @@ class ChiamataRest
      *
      * @param string $nomeCampoSuccess
      */
-    public function setNomeCampoSuccess(string $nomeCampoSuccess)
+    public function setNomeCampoSuccess($nomeCampoSuccess)
     {
         $this->nomeCampoSuccess = $nomeCampoSuccess;
     }
