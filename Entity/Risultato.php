@@ -20,28 +20,28 @@ class Risultato
     /**
      * contain information if there is been an error
      *
-     * @boolean
+     * @var boolean
      */
     private $success;
 
     /**
      * contain the message
      *
-     * @string
+     * @var string
      */
     private $message;
 
     /**
      * contain metadata catalog
      *
-     * @string
+     * @var string
      */
     private $catalog;
 
     /**
      * this contains the information, the core
      *
-     * @var
+     * @var string
      */
     private $items;
 
