@@ -41,7 +41,7 @@ class Risultato
     /**
      * this contains the information, the core
      *
-     * @var string
+     * @var
      */
     private $items;
 
