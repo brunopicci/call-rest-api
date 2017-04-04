@@ -46,6 +46,13 @@ class Risultato
     private $items;
 
     /**
+     * this contains the possible error code
+     *
+     * @var
+     */
+    private $errorCode;
+
+    /**
      * get success value
      *
      * @return boolean
@@ -124,5 +131,26 @@ class Risultato
     {
         $this->items = $items;
     }
+
+    /**
+     * get error code
+     *
+     * @return mixed
+     */
+    public function getErrorCode()
+    {
+        return $this->errorCode;
+    }
+
+    /**
+     * set error code
+     *
+     * @param mixed $errorCode
+     */
+    public function setErrorCode($errorCode)
+    {
+        $this->errorCode = $errorCode;
+    }
+
 
 }
