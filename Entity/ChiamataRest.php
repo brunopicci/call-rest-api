@@ -129,14 +129,20 @@ class ChiamataRest
         //Imposto i valori
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
+        if ($tipoChiamata!="FORM")
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
 
         //Se è post o patch di default deve passargli un json
         if ($tipoChiamata=="POST" || $tipoChiamata=="PUT") {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                'Content-Type: application/json',
-                'Content-Length: ' . strlen($json))
+                    'Content-Type: application/json',
+                    'Content-Length: ' . strlen($json))
             );
+        }
+
+        if ($tipoChiamata=="FORM") {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
         }
 
         //Controllo se è stato passato un json anche alla chiamata delete
@@ -237,7 +243,8 @@ class ChiamataRest
         //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
+        if ($tipoChiamata!="FORM")
+            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
 
         //Se è post o patch di default deve passargli un json
         if ($tipoChiamata=="POST" || $tipoChiamata=="PUT") {
@@ -245,6 +252,11 @@ class ChiamataRest
                     'Content-Type: application/json',
                     'Content-Length: ' . strlen($json))
             );
+        }
+
+        if ($tipoChiamata=="FORM") {
+            curl_setopt($ch, CURLOPT_POST, true);
+            curl_setopt($ch, CURLOPT_HEADER, 0);
         }
 
         //Controllo se è stato passato un json anche alla chiamata delete
