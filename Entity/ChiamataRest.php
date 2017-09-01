@@ -192,9 +192,9 @@ class ChiamataRest
         //Controllo se è stato scelto di testare il success field
         if ($this->controlSuccess) {
             //Controllo se il campo success è true o false
-            if (!$jsonDecodificato->$success) {
+            if (!$jsonDecodificato->success) {
                 throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
-                    $jsonDecodificato->$messaggio);
+                    $jsonDecodificato->messaggio);
             }
         }
 
@@ -307,9 +307,9 @@ class ChiamataRest
             $jsonDecodificato=json_decode($ritorno);
 
             //Controllo il campo success
-            if (!$jsonDecodificato->$success) {
+            if (!$jsonDecodificato->success) {
                 throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
-                    $jsonDecodificato->$messaggio);
+                    $jsonDecodificato->messaggio);
             }
         }
 
