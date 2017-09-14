@@ -88,6 +88,13 @@ class ChiamataRest
     private $nomeCampoSuccess="success";
 
     /**
+     * This variable contains the ssl version
+     *
+     * @var string
+     */
+    private $sslVersion;
+
+    /**
      *
      * Questo metodo effettua una chiamata rest con decodifica in output sotto autenticazione all'url passato, restituisce un array decodificato dal json di risposta, controlla anche se c'è stato un errore logico ed in caso solleva un'eccezione
      * Se viene passato un tipo chiamata questo può assumere i seguenti valori
@@ -129,6 +136,10 @@ class ChiamataRest
         //Imposto i valori
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        if (!empty($this->sslVersion))
+            curl_setopt($ch, CURLOPT_SSLVERSION, $this->sslVersion);
+
         if ($tipoChiamata!="FORM")
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
 
@@ -243,6 +254,10 @@ class ChiamataRest
         //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
         curl_setopt($ch, CURLOPT_URL, $url);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+
+        if (!empty($this->sslVersion))
+            curl_setopt($ch, CURLOPT_SSLVERSION, $this->sslVersion);
+
         if ($tipoChiamata!="FORM")
             curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
 
@@ -506,6 +521,22 @@ class ChiamataRest
     public function setNomeCampoSuccess($nomeCampoSuccess)
     {
         $this->nomeCampoSuccess = $nomeCampoSuccess;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSslVersion()
+    {
+        return $this->sslVersion;
+    }
+
+    /**
+     * @param string $sslVersion
+     */
+    public function setSslVersion($sslVersion)
+    {
+        $this->sslVersion = $sslVersion;
     }
 
 
