@@ -181,7 +181,8 @@ class ChiamataRest
         // Check if an error occurred
         if(curl_errno($ch)) {
             curl_close($ch);
-            throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il messaggio di ritorno è:".$ritorno);
+            throw new \Exception($ritorno);
+            //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il messaggio di ritorno è:".$ritorno);
         }
 
         // Get HTTP response code
@@ -195,7 +196,9 @@ class ChiamataRest
 
         //Controllo se il codice è tra quelli ammessi (200,201,202)
         if ($code!=200 && $code!=201 && $code!=202)
-            throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
+            throw new \Exception($ritorno);
+            //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
+
 
         //Decodifico in un array il json di ritorno
         $jsonDecodificato=json_decode($ritorno);
@@ -204,8 +207,9 @@ class ChiamataRest
         if ($this->controlSuccess) {
             //Controllo se il campo success è true o false
             if (!$jsonDecodificato->$success) {
-                throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
-                    $jsonDecodificato->$messaggio);
+                throw new \Exception($jsonDecodificato->$messaggio);
+                //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
+                //    $jsonDecodificato->$messaggio);
             }
         }
 
@@ -299,7 +303,8 @@ class ChiamataRest
         // Check if an error occurred
         if(curl_errno($ch)) {
             curl_close($ch);
-            throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il messaggio di ritorno è:".$ritorno);
+            throw new \Exception($ritorno);
+            //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il messaggio di ritorno è:".$ritorno);
         }
 
         // Get HTTP response code
@@ -313,7 +318,8 @@ class ChiamataRest
 
         //Controllo se il codice è tra quelli ammessi (200,201,202)
         if ($code!=200 && $code!=201 && $code!=202)
-            throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
+            throw new \Exception($ritorno);
+            //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
 
         //Controllo se è stato scelto di testare il success field
         if ($this->controlSuccess) {
@@ -323,8 +329,9 @@ class ChiamataRest
 
             //Controllo il campo success
             if (!$jsonDecodificato->$success) {
-                throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
-                    $jsonDecodificato->$messaggio);
+                throw new \Exception($jsonDecodificato->$messaggio);
+                //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante.". Le informazioni restituite dal Web Service sono le seguenti:".
+                //    $jsonDecodificato->$messaggio);
             }
         }
 
