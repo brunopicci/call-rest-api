@@ -95,6 +95,49 @@ class ChiamataRest
     private $sslVersion;
 
     /**
+     * This variable contain the information if needs to get cookie or not
+     *
+     * @var boolean
+     */
+    private $getCookie=false;
+
+    /**
+     * This property contains the value of the Cookie
+     *
+     * @var string
+     */
+    private $cookieValue;
+
+    /**
+     * This property contains the maximum amount of time in seconds to which the execution of individual cURL extension function calls will be limited. Timeout must be greater than Connecttimeout
+     *
+     * @var integer
+     */
+    private $timeout=90;
+
+    /**
+     * This property contains the maximum amount of time in seconds that is allowed to make the connection to the server. ConnectTimeout must be lower than timeout
+     *
+     * @var integer
+     */
+    private $connectTimeout=10;
+
+    /**
+     * This variable specify if header must be included in output or not
+     *
+     * @var boolean
+     */
+    private $includeHeader=false;
+
+    /**
+     * This property contains the USER-AGENT to set
+     *
+     * @var string
+     */
+    private $userAgent;
+
+
+    /**
      *
      * Questo metodo effettua una chiamata rest con decodifica in output sotto autenticazione all'url passato, restituisce un array decodificato dal json di risposta, controlla anche se c'è stato un errore logico ed in caso solleva un'eccezione
      * Se viene passato un tipo chiamata questo può assumere i seguenti valori
@@ -156,6 +199,22 @@ class ChiamataRest
             curl_setopt($ch, CURLOPT_HEADER, 0);
         }
 
+        //Verifico se devo impostare uno user agent
+        if (!empty($this->userAgent))
+            curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
+
+        //Imposto i timeout
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+
+        //Verifico se devo leggere cookie
+        if ($this->getCookie || $this->includeHeader)
+            curl_setopt($ch, CURLOPT_HEADER,1);
+
+        //Verifico se devo impostare cookie
+        if (!empty($this->cookieValue))
+            curl_setopt($ch, CURLOPT_COOKIE, $this->cookieValue );
+
         //Controllo se è stato passato un json anche alla chiamata delete
         if ($tipoChiamata=="DELETE" && !empty($json)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -195,7 +254,7 @@ class ChiamataRest
         curl_close($ch);
 
         //Controllo se il codice è tra quelli ammessi (200,201,202)
-        if ($code!=200 && $code!=201 && $code!=202)
+        if ($code<200 || $code>300)
             throw new \Exception($ritorno);
             //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
 
@@ -278,6 +337,22 @@ class ChiamataRest
             curl_setopt($ch, CURLOPT_HEADER, 0);
         }
 
+        //Verifico se devo impostare uno user agent
+        if (!empty($this->userAgent))
+            curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
+
+        //Imposto i timeout
+        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
+        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
+
+        //Verifico se devo leggere cookie
+        if ($this->getCookie || $this->includeHeader)
+            curl_setopt($ch, CURLOPT_HEADER,1);
+
+        //Verifico se devo impostare cookie
+        if (!empty($this->cookieValue))
+            curl_setopt($ch, CURLOPT_COOKIE, $this->cookieValue );
+
         //Controllo se è stato passato un json anche alla chiamata delete
         if ($tipoChiamata=="DELETE" && !empty($json)) {
             curl_setopt($ch, CURLOPT_HTTPHEADER, array(
@@ -317,7 +392,7 @@ class ChiamataRest
         curl_close($ch);
 
         //Controllo se il codice è tra quelli ammessi (200,201,202)
-        if ($code!=200 && $code!=201 && $code!=202)
+        if ($code<200 || $code>300)
             throw new \Exception($ritorno);
             //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
 
@@ -531,6 +606,8 @@ class ChiamataRest
     }
 
     /**
+     * This method permit to get the ssl version
+     *
      * @return string
      */
     public function getSslVersion()
@@ -539,6 +616,8 @@ class ChiamataRest
     }
 
     /**
+     * This method permit to specify the ssl version
+     *
      * @param string $sslVersion
      */
     public function setSslVersion($sslVersion)
@@ -546,5 +625,91 @@ class ChiamataRest
         $this->sslVersion = $sslVersion;
     }
 
+    /**
+     * Thi method set if the client want to read cookie from response
+     *
+     * @param bool $valore
+     */
+    function returnCookie(bool $valore=true){
+
+        if ($valore) {
+            $this->includeHeader=true;
+            $this->getCookie=true;
+        }
+
+    }
+
+    /**
+     * This method specify if the client want to set cookie. The value is the cookie. The cookie must be name:value
+     *
+     * @param $cookie
+     */
+    function setCookie($cookie){
+
+        if (!empty($cookie)) {
+            $this->includeHeader=true;
+            $this->cookieValue=$cookie;
+        }
+
+    }
+
+    /**
+     * This method specify if the client want get the header from response
+     *
+     * @param bool $valore
+     */
+    function getHeader(bool $valore=true){
+
+        if ($valore) {
+            $this->includeHeader=true;
+        }
+
+    }
+
+    /**
+     * This method can be used to set the entire timeout to get the response, this must be grater than connectiontimeout
+     *
+     * @param int $valore
+     * @throws \Exception
+     */
+    function setTimeout(int $valore){
+
+        if ($valore<$this->connectTimeout)
+            throw new \Exception("Timeout cannot be lower than ConnectionTimeout");
+
+        if (!empty($valore)) {
+            $this->timeout=$valore;
+        }
+
+    }
+
+    /**
+     * This method can be used to set the connection timeout to the server, this must be lower than timeout
+     *
+     * @param int $valore
+     * @throws \Exception
+     */
+    function setConnectionTimeout(int $valore){
+
+        if ($valore>$this->timeout)
+            throw new \Exception("ConnectionTimeout cannot be greater than Timeout");
+
+        if (!empty($valore)) {
+            $this->connectTimeout=$valore;
+        }
+
+    }
+
+    /**
+     * This method can be used to specify the user agent to pass to server
+     *
+     * @param string $valore
+     */
+    function setUserAgent(string $valore) {
+
+        if (!empty($valore)) {
+            $this->userAgent=$valore;
+        }
+    }
 
 }
