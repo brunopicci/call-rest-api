@@ -136,26 +136,7 @@ class ChiamataRest
      */
     private $userAgent;
 
-
-    /**
-     *
-     * Questo metodo effettua una chiamata rest con decodifica in output sotto autenticazione all'url passato, restituisce un array decodificato dal json di risposta, controlla anche se c'è stato un errore logico ed in caso solleva un'eccezione
-     * Se viene passato un tipo chiamata questo può assumere i seguenti valori
-     * GET
-     * POST
-     * PUT
-     * DELETE
-     *
-     * This metod make a rest call and return an array, http verb permits are:
-     * GET
-     * POST
-     * PUT
-     * DELETE
-     *
-     * @return array
-     * @throws \Exception
-     */
-    public function chiamataRestDecodificata() {
+    private function chiamataCommonPart(){
 
         //Dichiaro le variabili
         $url=$this->url;
@@ -166,8 +147,6 @@ class ChiamataRest
         $tipoChiamata=$this->tipoChiamata;
         $ritorno="";
         $jsonDecodificato="";
-        $messaggio=$this->nomeCampoMessage;
-        $success=$this->nomeCampoSuccess;
 
         //Tolgo gli spazi
         $url = str_replace(" ","%20",$url);
@@ -256,8 +235,38 @@ class ChiamataRest
         //Controllo se il codice è tra quelli ammessi (200,201,202)
         if ($code<200 || $code>300)
             throw new \Exception($ritorno);
-            //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
+        //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
 
+        return $ritorno;
+
+    }
+
+    /**
+     *
+     * Questo metodo effettua una chiamata rest con decodifica in output sotto autenticazione all'url passato, restituisce un array decodificato dal json di risposta, controlla anche se c'è stato un errore logico ed in caso solleva un'eccezione
+     * Se viene passato un tipo chiamata questo può assumere i seguenti valori
+     * GET
+     * POST
+     * PUT
+     * DELETE
+     *
+     * This metod make a rest call and return an array, http verb permits are:
+     * GET
+     * POST
+     * PUT
+     * DELETE
+     *
+     * @return array
+     * @throws \Exception
+     */
+    public function chiamataRestDecodificata() {
+
+        //Settaggi di default
+        $messaggio=$this->nomeCampoMessage;
+        $success=$this->nomeCampoSuccess;
+
+        //Chiamo la parte comune
+        $ritorno=$this->chiamataCommonPart();
 
         //Decodifico in un array il json di ritorno
         $jsonDecodificato=json_decode($ritorno);
@@ -295,106 +304,12 @@ class ChiamataRest
      */
     public function chiamataRest() {
 
-        //Dichiaro le variabili
-        $url=$this->url;
-        $login=$this->login;
-        $password=$this->password;
-        $chiamante=$this->chiamante;
-        $json=$this->json;
-        $tipoChiamata=$this->tipoChiamata;
-        $ritorno="";
-        $jsonDecodificato="";
+        //Settaggi di default
         $messaggio=$this->nomeCampoMessage;
         $success=$this->nomeCampoSuccess;
 
-        //Tolgo gli spazi
-        $url = str_replace(" ","%20",$url);
-
-        //Inizializzo la chiamata
-        $ch = curl_init();
-
-        //Imposto i valori
-        //curl_setopt($ch, CURLOPT_HTTPHEADER, array('Expect:'));
-        curl_setopt($ch, CURLOPT_URL, $url);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
-
-        if (!empty($this->sslVersion))
-            curl_setopt($ch, CURLOPT_SSLVERSION, $this->sslVersion);
-
-        if ($tipoChiamata!="FORM")
-            curl_setopt($ch, CURLOPT_CUSTOMREQUEST, $tipoChiamata);
-
-        //Se è post o patch di default deve passargli un json
-        if ($tipoChiamata=="POST" || $tipoChiamata=="PUT") {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen($json))
-            );
-        }
-
-        if ($tipoChiamata=="FORM") {
-            curl_setopt($ch, CURLOPT_POST, true);
-            curl_setopt($ch, CURLOPT_HEADER, 0);
-        }
-
-        //Verifico se devo impostare uno user agent
-        if (!empty($this->userAgent))
-            curl_setopt($ch, CURLOPT_USERAGENT, $this->userAgent);
-
-        //Imposto i timeout
-        curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->connectTimeout);
-        curl_setopt($ch, CURLOPT_TIMEOUT, $this->timeout);
-
-        //Verifico se devo leggere cookie
-        if ($this->getCookie || $this->includeHeader)
-            curl_setopt($ch, CURLOPT_HEADER,1);
-
-        //Verifico se devo impostare cookie
-        if (!empty($this->cookieValue))
-            curl_setopt($ch, CURLOPT_COOKIE, $this->cookieValue );
-
-        //Controllo se è stato passato un json anche alla chiamata delete
-        if ($tipoChiamata=="DELETE" && !empty($json)) {
-            curl_setopt($ch, CURLOPT_HTTPHEADER, array(
-                    'Content-Type: application/json',
-                    'Content-Length: ' . strlen($json))
-            );
-        }
-
-        //Se è stato passato un userid allora lo setto nell'header
-        if (!empty($login)) {
-            curl_setopt($ch, CURLOPT_HTTPAUTH, CURLAUTH_BASIC);
-            curl_setopt($ch, CURLOPT_USERPWD, "$login:$password");
-        }
-
-        //Gli passo il json se valorizzato
-        if (!empty($json)) {
-            curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
-        }
-
-        //Effettuo la chiamata
-        $ritorno=curl_exec($ch);
-
-        // Check if an error occurred
-        if(curl_errno($ch)) {
-            curl_close($ch);
-            throw new \Exception($ritorno);
-            //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il messaggio di ritorno è:".$ritorno);
-        }
-
-        // Get HTTP response code
-        $code = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-
-        //Salvo l'httpcode nel caso in cui il chiamante voglia leggerlo
-        $this->httpcode=$code;
-
-        //Chiudo
-        curl_close($ch);
-
-        //Controllo se il codice è tra quelli ammessi (200,201,202)
-        if ($code<200 || $code>300)
-            throw new \Exception($ritorno);
-            //throw new \Exception("Risposta negativa alla seguente chiamata:".$chiamante." Il codice di ritorno è:".$code." e il messaggio:".$ritorno);
+        //Chiamo la parte comune
+        $ritorno=$this->chiamataCommonPart();
 
         //Controllo se è stato scelto di testare il success field
         if ($this->controlSuccess) {
@@ -632,6 +547,7 @@ class ChiamataRest
      */
     function returnCookie(bool $valore=true){
 
+        //Se è true valorizzo, di default lo è
         if ($valore) {
             $this->includeHeader=true;
             $this->getCookie=true;
@@ -646,6 +562,7 @@ class ChiamataRest
      */
     function setCookie($cookie){
 
+        //Verifico se è stato passato un cookie
         if (!empty($cookie)) {
             $this->includeHeader=true;
             $this->cookieValue=$cookie;
@@ -660,6 +577,7 @@ class ChiamataRest
      */
     function getHeader(bool $valore=true){
 
+        //Se è true lo imposto, di default è comunque true
         if ($valore) {
             $this->includeHeader=true;
         }
@@ -674,9 +592,11 @@ class ChiamataRest
      */
     function setTimeout(int $valore){
 
+        //Verifico che il timeout non abbia un valore inferiore al connection timeout
         if ($valore<$this->connectTimeout)
             throw new \Exception("Timeout cannot be lower than ConnectionTimeout");
 
+        //Se non è vuoto lo valorizzo
         if (!empty($valore)) {
             $this->timeout=$valore;
         }
@@ -691,9 +611,11 @@ class ChiamataRest
      */
     function setConnectionTimeout(int $valore){
 
+        //Verifico che il valore di connectiontimeout non ecceda il valore di timeout
         if ($valore>$this->timeout)
             throw new \Exception("ConnectionTimeout cannot be greater than Timeout");
 
+        //Se non è vuoto lo valorizzo
         if (!empty($valore)) {
             $this->connectTimeout=$valore;
         }
@@ -707,6 +629,7 @@ class ChiamataRest
      */
     function setUserAgent(string $valore) {
 
+        // Se non è vuoto valorizzo lo user agent
         if (!empty($valore)) {
             $this->userAgent=$valore;
         }
