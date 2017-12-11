@@ -102,6 +102,13 @@ class ChiamataRest
     private $getCookie=false;
 
     /**
+     * This variable contain the information if needs to verify peer or not
+     *
+     * @var boolean
+     */
+    private $verifyPeer=true;
+
+    /**
      * This property contains the value of the Cookie
      *
      * @var string
@@ -145,6 +152,7 @@ class ChiamataRest
         $chiamante=$this->chiamante;
         $json=$this->json;
         $tipoChiamata=$this->tipoChiamata;
+        $verifyPeer=$this->verifyPeer;
         $ritorno="";
         $jsonDecodificato="";
 
@@ -211,6 +219,12 @@ class ChiamataRest
         //Gli passo il json se valorizzato
         if (!empty($json)) {
             curl_setopt($ch, CURLOPT_POSTFIELDS, $json);
+        }
+
+        //Verifico se devo controllare il peer o no, di default lo fa
+        if (!$verifyPeer) {
+            //Non deve essere controllato
+            curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, FALSE);
         }
 
         //Effettuo la chiamata
@@ -633,6 +647,22 @@ class ChiamataRest
         if (!empty($valore)) {
             $this->userAgent=$valore;
         }
+    }
+
+    /**
+     * @return bool
+     */
+    public function isVerifyPeer()
+    {
+        return $this->verifyPeer;
+    }
+
+    /**
+     * @param bool $verifyPeer
+     */
+    public function setVerifyPeer($verifyPeer)
+    {
+        $this->verifyPeer = $verifyPeer;
     }
 
 }
