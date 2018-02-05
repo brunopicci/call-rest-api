@@ -559,7 +559,7 @@ class ChiamataRest
      *
      * @param bool $valore
      */
-    function returnCookie(bool $valore=true){
+    function returnCookie($valore=true){
 
         //Se è true valorizzo, di default lo è
         if ($valore) {
@@ -589,7 +589,7 @@ class ChiamataRest
      *
      * @param bool $valore
      */
-    function getHeader(bool $valore=true){
+    function getHeader($valore=true){
 
         //Se è true lo imposto, di default è comunque true
         if ($valore) {
@@ -604,7 +604,7 @@ class ChiamataRest
      * @param int $valore
      * @throws \Exception
      */
-    function setTimeout(int $valore){
+    function setTimeout($valore){
 
         //Verifico che il timeout non abbia un valore inferiore al connection timeout
         if ($valore<$this->connectTimeout)
@@ -623,7 +623,7 @@ class ChiamataRest
      * @param int $valore
      * @throws \Exception
      */
-    function setConnectionTimeout(int $valore){
+    function setConnectionTimeout($valore){
 
         //Verifico che il valore di connectiontimeout non ecceda il valore di timeout
         if ($valore>$this->timeout)
@@ -641,7 +641,7 @@ class ChiamataRest
      *
      * @param string $valore
      */
-    function setUserAgent(string $valore) {
+    function setUserAgent($valore) {
 
         // Se non è vuoto valorizzo lo user agent
         if (!empty($valore)) {
