@@ -137,10 +137,11 @@ class AppKernel extends Kernel
 ```
 
 In config.yml import services.yml of the bundle:
+```php
 imports:
     ...
     - { resource: "@ServicesRestBundle/Resources/config/services.yml" }
-
+```
 
 License
 -------
