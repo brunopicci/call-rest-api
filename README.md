@@ -1,5 +1,10 @@
 [![Latest Stable Version](https://poser.pugx.org/brunopicci/call-rest-api/v/stable)](https://packagist.org/packages/brunopicci/call-rest-api)
 [![Total Downloads](https://poser.pugx.org/brunopicci/call-rest-api/downloads)](https://packagist.org/packages/brunopicci/call-rest-api)
+[![Latest Unstable Version](https://poser.pugx.org/brunopicci/call-rest-api/v/unstable)](https://packagist.org/packages/brunopicci/call-rest-api)
+[![License](https://poser.pugx.org/brunopicci/call-rest-api/license)](https://packagist.org/packages/brunopicci/call-rest-api)
+[![Monthly Downloads](https://poser.pugx.org/brunopicci/call-rest-api/d/monthly)](https://packagist.org/packages/brunopicci/call-rest-api)
+[![Daily Downloads](https://poser.pugx.org/brunopicci/call-rest-api/d/daily)](https://packagist.org/packages/brunopicci/call-rest-api)
+[![composer.lock](https://poser.pugx.org/brunopicci/call-rest-api/composerlock)](https://packagist.org/packages/brunopicci/call-rest-api)
 
 ServicesBundle
 =============
