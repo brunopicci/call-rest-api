@@ -1,3 +1,6 @@
+[![Latest Stable Version](https://poser.pugx.org/brunopicci/call-rest-api/v/stable)](https://packagist.org/packages/brunopicci/call-rest-api)
+[![Total Downloads](https://poser.pugx.org/brunopicci/call-rest-api/downloads)](https://packagist.org/packages/brunopicci/call-rest-api)
+
 ServicesBundle
 =============
 
